@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "bJ4PlhnxRcY=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\ZHONG\\OneDrive - Wayne State University\\wayne\\3.project\\milad-honeycomb\\Code_QTR\\Csharp4calculation\\ConsoleApp1\\ConsoleApp1.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\ZHONG\\.nuget\\packages\\skiasharp\\2.88.8\\skiasharp.2.88.8.nupkg.sha512",
+    "C:\\Users\\ZHONG\\.nuget\\packages\\skiasharp.nativeassets.macos\\2.88.8\\skiasharp.nativeassets.macos.2.88.8.nupkg.sha512",
+    "C:\\Users\\ZHONG\\.nuget\\packages\\skiasharp.nativeassets.win32\\2.88.8\\skiasharp.nativeassets.win32.2.88.8.nupkg.sha512"
+  ],
+  "logs": []
+}
