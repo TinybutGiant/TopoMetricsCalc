@@ -1,4 +1,4 @@
-﻿using SkiaSharp;
+﻿/* using SkiaSharp;
 using System;
 using System.IO;
 
@@ -82,3 +82,4 @@ public class ConcentricCirclesOverlap
         Console.WriteLine("Concentric circles drawn and saved as concentric_circles.png");
     }
 }
+*/
