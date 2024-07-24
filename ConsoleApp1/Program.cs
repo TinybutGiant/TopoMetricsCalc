@@ -15,20 +15,6 @@ static class Program
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());
         }
-    public static float CalculateOverlapArea(float RA_1, float RA_2, float RB_1, float RB_2, float d)
-    {
-        float overlapArea1 = CalculateTwoCirclesOverlap(RA_1, RB_1, d);
-        float overlapArea2 = CalculateTwoCirclesOverlap(RA_1, RB_2, d);
-        float overlapArea3 = CalculateTwoCirclesOverlap(RA_2, RB_1, d);
-        float overlapArea4 = CalculateTwoCirclesOverlap(RA_2, RB_2, d);
-
-        Console.WriteLine($"Overlap Area between RA_1 and RB_1: {overlapArea1}");
-        Console.WriteLine($"Overlap Area between RA_1 and RB_2: {overlapArea2}");
-        Console.WriteLine($"Overlap Area between RA_2 and RB_1: {overlapArea3}");
-        Console.WriteLine($"Overlap Area between RA_2 and RB_2: {overlapArea4}");
-
-        return overlapArea1 + overlapArea2 + overlapArea3 + overlapArea4;
-    }
 
     public static float CalculateTwoCirclesOverlap(float R1, float R2, float d)
     {
