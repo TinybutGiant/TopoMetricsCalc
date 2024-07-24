@@ -17,23 +17,14 @@
           "C:\\Users\\ZHONG\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
-<<<<<<< HEAD
           "net8.0-windows"
-=======
-          "net8.0"
->>>>>>> 5c64e608662f08557d4e5797d7066754786c60cd
         ],
         "sources": {
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-<<<<<<< HEAD
           "net8.0-windows7.0": {
             "targetAlias": "net8.0-windows",
-=======
-          "net8.0": {
-            "targetAlias": "net8.0",
->>>>>>> 5c64e608662f08557d4e5797d7066754786c60cd
             "projectReferences": {}
           }
         },
@@ -49,24 +40,16 @@
         }
       },
       "frameworks": {
-<<<<<<< HEAD
         "net8.0-windows7.0": {
           "targetAlias": "net8.0-windows",
-=======
-        "net8.0": {
-          "targetAlias": "net8.0",
->>>>>>> 5c64e608662f08557d4e5797d7066754786c60cd
           "dependencies": {
             "SkiaSharp": {
               "target": "Package",
               "version": "[2.88.8, )"
-<<<<<<< HEAD
             },
             "SkiaSharp.Views.WindowsForms": {
               "target": "Package",
               "version": "[2.88.8, )"
-=======
->>>>>>> 5c64e608662f08557d4e5797d7066754786c60cd
             }
           },
           "imports": [
@@ -83,12 +66,9 @@
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
-<<<<<<< HEAD
             },
             "Microsoft.WindowsDesktop.App.WindowsForms": {
               "privateAssets": "none"
-=======
->>>>>>> 5c64e608662f08557d4e5797d7066754786c60cd
             }
           },
           "runtimeIdentifierGraphPath": "c:\\program files\\dotnet\\sdk\\8.0.303/PortableRuntimeIdentifierGraph.json"
