@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 ﻿/* using SkiaSharp;
+=======
+﻿using SkiaSharp;
+>>>>>>> 5c64e608662f08557d4e5797d7066754786c60cd
 using System;
 using System.IO;
 
@@ -82,4 +86,7 @@ public class ConcentricCirclesOverlap
         Console.WriteLine("Concentric circles drawn and saved as concentric_circles.png");
     }
 }
+<<<<<<< HEAD
 */
+=======
+>>>>>>> 5c64e608662f08557d4e5797d7066754786c60cd

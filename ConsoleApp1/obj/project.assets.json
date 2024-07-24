@@ -1,6 +1,7 @@
 {
   "version": 3,
   "targets": {
+<<<<<<< HEAD
     "net8.0-windows7.0": {
       "Microsoft.NETCore.Platforms/3.1.9": {
         "type": "package",
@@ -62,6 +63,9 @@
           }
         }
       },
+=======
+    "net8.0": {
+>>>>>>> 5c64e608662f08557d4e5797d7066754786c60cd
       "SkiaSharp/2.88.8": {
         "type": "package",
         "dependencies": {
@@ -116,6 +120,7 @@
             "rid": "win-x86"
           }
         }
+<<<<<<< HEAD
       },
       "SkiaSharp.Views.Desktop.Common/2.88.8": {
         "type": "package",
@@ -177,10 +182,13 @@
             "rid": "win"
           }
         }
+=======
+>>>>>>> 5c64e608662f08557d4e5797d7066754786c60cd
       }
     }
   },
   "libraries": {
+<<<<<<< HEAD
     "Microsoft.NETCore.Platforms/3.1.9": {
       "sha512": "e+/BrhryHoMojWlbcPJAFcShpk3JYvsMfrmoM26dnvHARWR6vtmGbfHppZcANVqf7DUBDIRxlZXcWg7v/9e1TQ==",
       "type": "package",
@@ -257,6 +265,8 @@
         "opentk.glcontrol.nuspec"
       ]
     },
+=======
+>>>>>>> 5c64e608662f08557d4e5797d7066754786c60cd
     "SkiaSharp/2.88.8": {
       "sha512": "bRkp3uKp5ZI8gXYQT57uKwil1uobb2p8c69n7v5evlB/2JNcMAXVcw9DZAP5Ig3WSvgzGm2YSn27UVeOi05NlA==",
       "type": "package",
@@ -378,6 +388,7 @@
         "skiasharp.nativeassets.win32.2.88.8.nupkg.sha512",
         "skiasharp.nativeassets.win32.nuspec"
       ]
+<<<<<<< HEAD
     },
     "SkiaSharp.Views.Desktop.Common/2.88.8": {
       "sha512": "SBP7byk9a5gmzHriOTC6BjykqJ5rCTqXIo/RLNszPaKwDs8naCZGUM9GZmreshPkpsyez3Ci4sm3+eleuSGgVQ==",
@@ -463,6 +474,13 @@
     "net8.0-windows7.0": [
       "SkiaSharp >= 2.88.8",
       "SkiaSharp.Views.WindowsForms >= 2.88.8"
+=======
+    }
+  },
+  "projectFileDependencyGroups": {
+    "net8.0": [
+      "SkiaSharp >= 2.88.8"
+>>>>>>> 5c64e608662f08557d4e5797d7066754786c60cd
     ]
   },
   "packageFolders": {
@@ -481,14 +499,23 @@
         "C:\\Users\\ZHONG\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
+<<<<<<< HEAD
         "net8.0-windows"
+=======
+        "net8.0"
+>>>>>>> 5c64e608662f08557d4e5797d7066754786c60cd
       ],
       "sources": {
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
+<<<<<<< HEAD
         "net8.0-windows7.0": {
           "targetAlias": "net8.0-windows",
+=======
+        "net8.0": {
+          "targetAlias": "net8.0",
+>>>>>>> 5c64e608662f08557d4e5797d7066754786c60cd
           "projectReferences": {}
         }
       },
@@ -504,16 +531,24 @@
       }
     },
     "frameworks": {
+<<<<<<< HEAD
       "net8.0-windows7.0": {
         "targetAlias": "net8.0-windows",
+=======
+      "net8.0": {
+        "targetAlias": "net8.0",
+>>>>>>> 5c64e608662f08557d4e5797d7066754786c60cd
         "dependencies": {
           "SkiaSharp": {
             "target": "Package",
             "version": "[2.88.8, )"
+<<<<<<< HEAD
           },
           "SkiaSharp.Views.WindowsForms": {
             "target": "Package",
             "version": "[2.88.8, )"
+=======
+>>>>>>> 5c64e608662f08557d4e5797d7066754786c60cd
           }
         },
         "imports": [
@@ -530,14 +565,18 @@
         "frameworkReferences": {
           "Microsoft.NETCore.App": {
             "privateAssets": "all"
+<<<<<<< HEAD
           },
           "Microsoft.WindowsDesktop.App.WindowsForms": {
             "privateAssets": "none"
+=======
+>>>>>>> 5c64e608662f08557d4e5797d7066754786c60cd
           }
         },
         "runtimeIdentifierGraphPath": "c:\\program files\\dotnet\\sdk\\8.0.303/PortableRuntimeIdentifierGraph.json"
       }
     }
+<<<<<<< HEAD
   },
   "logs": [
     {
@@ -561,4 +600,7 @@
       ]
     }
   ]
+=======
+  }
+>>>>>>> 5c64e608662f08557d4e5797d7066754786c60cd
 }

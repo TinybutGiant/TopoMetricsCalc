@@ -1,17 +1,28 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+<<<<<<< HEAD
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
+=======
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+>>>>>>> 5c64e608662f08557d4e5797d7066754786c60cd
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="SkiaSharp" Version="2.88.8" />
+<<<<<<< HEAD
     <PackageReference Include="SkiaSharp.Views.WindowsForms" Version="2.88.8" />
   </ItemGroup>
 
 </Project>
+=======
+  </ItemGroup>
+
+</Project>
+>>>>>>> 5c64e608662f08557d4e5797d7066754786c60cd
