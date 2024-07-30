@@ -41,70 +41,166 @@ namespace ConsoleApp1
         private void InitializeCustomComponents()
         {
             this.Text = "Circles Overlap";
-            this.WindowState = FormWindowState.Maximized; // 启动时最大化
+            this.WindowState = FormWindowState.Maximized;
 
-            // 创建一个Panel用于滚动查看内容
-            Panel scrollPanel = new Panel();
-            scrollPanel.Dock = DockStyle.Fill;
-            scrollPanel.AutoScroll = true;
-            this.Controls.Add(scrollPanel); 
+            // 创建一个TableLayoutPanel用于滚动查看内容
+            TableLayoutPanel tablePanel = new TableLayoutPanel
+            {
+                Dock = DockStyle.Fill,
+                AutoScroll = true,
+                ColumnCount = 2,
+                RowCount = 0,
+                AutoSize = true,
+                GrowStyle = TableLayoutPanelGrowStyle.AddRows
+            };
+            this.Controls.Add(tablePanel);
+
+            string[] reentrantLabels = { "e (horizontal distance):", "l (slant edge length):", "t (thickness):", "theta (angle):" };
+            string[] defaultValues_1 = { "40", "10", "2", "0.959931" }; // theta = 55 degrees in radians
+
+            AddReentrantLabelsAndTextBoxes(tablePanel, reentrantLabels, defaultValues_1);
+
+            // 添加绘制re-entrant结构的Panel
+            Panel drawingPanel = new Panel
+            {
+                Width = 500,
+                Height = 500,
+                BorderStyle = BorderStyle.FixedSingle
+            };
+            drawingPanel.Paint += DrawingPanel_Paint;
+            tablePanel.Controls.Add(drawingPanel);
+            tablePanel.SetColumnSpan(drawingPanel, 2);
 
             string[] raLabels = { "RA_1 (interior radius of A):", "RA_2 (interior boundary of A):", "RA_3 (boundary of A):", "RA_4 (exterior boundary of A):" };
             string[] rbLabels = { "RB_1 (interior radius of B):", "RB_2 (interior boundary of B):", "RB_3 (boundary of B):", "RB_4 (exterior boundary of B):" };
-            string[] defaultValues = { "15", "15.75", "17.75", "18.5" };
+            string[] defaultValues_2 = { "15", "15.75", "17.75", "18.5" };
 
+            AddLabelsAndTextBoxes(tablePanel, raLabels, rbLabels, defaultValues_2);
+
+            // 计算AC之间的距离 d
+            double e = Convert.ToDouble(defaultValues_1[0]);
+            double l = Convert.ToDouble(defaultValues_1[1]);
+            double theta = Convert.ToDouble(defaultValues_1[3]);
+            double d = CalculateDistance(e, l, theta);
+
+            Label dLabel = CreateLabel("d (distance between centers):", 0, 0);
+            dTextBox = CreateTextBox(0, 0, d.ToString());
+            tablePanel.Controls.Add(dLabel);
+            tablePanel.Controls.Add(dTextBox);
+
+            calculateButton = new Button { Text = "Update Calculate", AutoSize = true };
+            calculateButton.Click += CalculateButton_Click;
+            tablePanel.Controls.Add(calculateButton);
+            tablePanel.SetColumnSpan(calculateButton, 2);
+
+            CreateResultPanels(tablePanel);
+        }
+        private void AddReentrantLabelsAndTextBoxes(TableLayoutPanel panel, string[] labels, string[] defaultValues)
+        {
+            for (int i = 0; i < labels.Length; i++)
+            {
+                Label label = CreateLabel(labels[i], 0, 0);
+                TextBox textBox = CreateTextBox(0, 0, defaultValues[i]);
+                panel.Controls.Add(label);
+                panel.Controls.Add(textBox);
+            }
+        }
+
+        private double CalculateDistance(double e, double l, double theta)
+        {
+            // 根据几何关系计算AC的距离d
+            return Math.Sqrt(e * e + 4 * l * l - 4 * e * l * Math.Cos(theta));
+        }
+
+        private void AddLabelsAndTextBoxes(TableLayoutPanel panel, string[] raLabels, string[] rbLabels, string[] defaultValues)
+        {
             for (int i = 0; i < 4; i++)
             {
-                Label raLabel = CreateLabel(raLabels[i], 20 + 30 * i, 20);
-                TextBox raTextBox = CreateTextBox(20 + 30 * i, 250, defaultValues[i]);
+                Label raLabel = CreateLabel(raLabels[i], 0, 0);
+                TextBox raTextBox = CreateTextBox(0, 0, defaultValues[i]);
                 raTextBoxes[i] = raTextBox;
-                scrollPanel.Controls.Add(raLabel);
-                scrollPanel.Controls.Add(raTextBox);
+                panel.Controls.Add(raLabel);
+                panel.Controls.Add(raTextBox);
 
-                Label rbLabel = CreateLabel(rbLabels[i], 20 + 30 * i, 400);
-                TextBox rbTextBox = CreateTextBox(20 + 30 * i, 630, defaultValues[i]);
+                Label rbLabel = CreateLabel(rbLabels[i], 0, 0);
+                TextBox rbTextBox = CreateTextBox(0, 0, defaultValues[i]);
                 rbTextBoxes[i] = rbTextBox;
-                scrollPanel.Controls.Add(rbLabel);
-                scrollPanel.Controls.Add(rbTextBox);
+                panel.Controls.Add(rbLabel);
+                panel.Controls.Add(rbTextBox);
             }
+        }
 
-            Label dLabel = CreateLabel("d (distance between centers):", 140, 20);
-            dTextBox = CreateTextBox(140, 250, "32");
-            scrollPanel.Controls.Add(dLabel);
-            scrollPanel.Controls.Add(dTextBox);
-
-            calculateButton = new Button { Text = "Update Calculate", Top = 170, Left = 150, AutoSize = true };
-            calculateButton.Click += CalculateButton_Click;
-            scrollPanel.Controls.Add(calculateButton);
-
-            // Create panels for each SKControl with its label and text box
+        private void CreateResultPanels(TableLayoutPanel panel)
+        {
             for (int i = 0; i < 16; i++)
             {
                 int row = i / 4;
                 int col = i % 4;
 
-                Panel panel = new Panel
+                Panel resultPanel = new Panel
                 {
-                    Top = 200 + (i / 4) * 240,
-                    Left = 20 + (i % 4) * 200,
-                    Width = 180,
+                    Width = 200,
                     Height = 240,
                     BorderStyle = BorderStyle.FixedSingle
                 };
 
                 resultLabels[i] = CreateLabel($"Overlap Area (RA_{row + 1} & RB_{col + 1}):", 0, 0);
-                resultTextBoxes[i] = CreateTextBox(20, 0, "");
+                resultTextBoxes[i] = CreateTextBox(0, 20, "");
                 resultTextBoxes[i].ReadOnly = true;
 
                 skControls[i] = new SKControl { Top = 40, Left = 0, Width = 180, Height = 180 };
                 skControls[i].PaintSurface += (s, e) => SkControl_PaintSurface(e, ra[row], rb[col], d);
 
-                panel.Controls.Add(resultLabels[i]);
-                panel.Controls.Add(resultTextBoxes[i]);
-                panel.Controls.Add(skControls[i]);
+                resultPanel.Controls.Add(resultLabels[i]);
+                resultPanel.Controls.Add(resultTextBoxes[i]);
+                resultPanel.Controls.Add(skControls[i]);
 
-                scrollPanel.Controls.Add(panel);
+                panel.Controls.Add(resultPanel);
             }
+        }
+
+        private void DrawingPanel_Paint(object sender, PaintEventArgs e)
+        {
+            Graphics g = e.Graphics;
+            Pen pen = new Pen(Color.Black, 2);
+
+            double eValue = Convert.ToDouble("40");
+            double lValue = Convert.ToDouble("10");
+            double tValue = Convert.ToDouble("2");
+            double thetaValue = Convert.ToDouble("0.959931");
+
+            float eFloat = (float)eValue;
+            float l = (float)lValue;
+            float t = (float)tValue;
+            float theta = (float)thetaValue;
+
+            float x0 = 250, y0 = 250;
+
+            // 计算各点坐标
+            float ax = x0, ay = y0;
+            float bx = ax + eFloat / 2, by = ay - (float)(l * Math.Sin(theta));
+            float cx = bx + (float)(l * Math.Cos(theta)), cy = by + (float)(l * Math.Sin(theta));
+            float dx = cx, dy = cy + t;
+            float ex = dx - (float)(l * Math.Cos(theta)), ey = dy + (float)(l * Math.Sin(theta));
+            float fx = ax - eFloat / 2, fy = ey;
+            float gx = fx + (float)(l * Math.Cos(theta)), gy = fy - (float)(l * Math.Sin(theta));
+            float hx = gx, hy = gy - t;
+
+            // 绘制re-entrant结构
+            PointF[] points = { new PointF(ax, ay), new PointF(bx, by), new PointF(cx, cy), new PointF(dx, dy), new PointF(ex, ey), new PointF(fx, fy), new PointF(gx, gy), new PointF(hx, hy) };
+            g.DrawPolygon(pen, points);
+
+            // 标注顶点
+            Font font = new Font("Arial", 10);
+            Brush brush = Brushes.Black;
+            g.DrawString("A", font, brush, ax, ay);
+            g.DrawString("B", font, brush, bx, by);
+            g.DrawString("C", font, brush, cx, cy);
+            g.DrawString("D", font, brush, dx, dy);
+            g.DrawString("E", font, brush, ex, ey);
+            g.DrawString("F", font, brush, fx, fy);
+            g.DrawString("G", font, brush, gx, gy);
+            g.DrawString("H", font, brush, hx, hy);
         }
 
         private void CalculateButton_Click(object? sender, EventArgs e)
