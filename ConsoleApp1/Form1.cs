@@ -163,44 +163,49 @@ namespace ConsoleApp1
         {
             Graphics g = e.Graphics;
             Pen pen = new Pen(Color.Black, 2);
+            float scale = 10.0f; // 放大倍数
 
             double eValue = Convert.ToDouble("40");
             double lValue = Convert.ToDouble("10");
             double tValue = Convert.ToDouble("2");
             double thetaValue = Convert.ToDouble("0.959931");
 
-            float eFloat = (float)eValue;
-            float l = (float)lValue;
-            float t = (float)tValue;
+            float eFloat = (float)eValue * scale;;
+            float l = (float)lValue * scale;;
+            float t = (float)tValue * scale;;
             float theta = (float)thetaValue;
 
-            float x0 = 250, y0 = 250;
+            float x0 = 50, y0 = 250;
 
             // 计算各点坐标
             float ax = x0, ay = y0;
-            float bx = ax + eFloat / 2, by = ay - (float)(l * Math.Sin(theta));
-            float cx = bx + (float)(l * Math.Cos(theta)), cy = by + (float)(l * Math.Sin(theta));
-            float dx = cx, dy = cy + t;
-            float ex = dx - (float)(l * Math.Cos(theta)), ey = dy + (float)(l * Math.Sin(theta));
-            float fx = ax - eFloat / 2, fy = ey;
-            float gx = fx + (float)(l * Math.Cos(theta)), gy = fy - (float)(l * Math.Sin(theta));
-            float hx = gx, hy = gy - t;
+            float bx = ax + eFloat, by = ay;
+            float cx = bx - (float)(l * Math.Sin(theta)), cy = by - (float)(l * Math.Cos(theta));
+            float dx = bx, dy = by - (float)(2* l * Math.Cos(theta));
+            float ex = ax, ey = dy;
+            float fx = ax + (float)(l * Math.Sin(theta)), fy = cy;
+            float gx = fx - l, gy = fy;
+            float hx = cx + l, hy = gy;
 
-            // 绘制re-entrant结构
-            PointF[] points = { new PointF(ax, ay), new PointF(bx, by), new PointF(cx, cy), new PointF(dx, dy), new PointF(ex, ey), new PointF(fx, fy), new PointF(gx, gy), new PointF(hx, hy) };
+            // 绘制re-entrant结构 多边形 ABCDEF
+            //PointF[] points = { new PointF(ax, ay), new PointF(bx, by), new PointF(cx, cy), new PointF(dx, dy), new PointF(ex, ey), new PointF(fx, fy), new PointF(gx, gy), new PointF(hx, hy) };
+            PointF[] points = { new PointF(ax, ay), new PointF(bx, by), new PointF(cx, cy), new PointF(dx, dy), new PointF(ex, ey), new PointF(fx, fy) };
             g.DrawPolygon(pen, points);
+            // 单独绘制线段 GF 和 CH
+            g.DrawLine(pen, gx, gy, fx, fy); // 绘制线段 GF
+            g.DrawLine(pen, cx, cy, hx, hy); // 绘制线段 CH
 
             // 标注顶点
             Font font = new Font("Arial", 10);
             Brush brush = Brushes.Black;
-            g.DrawString("A", font, brush, ax, ay);
-            g.DrawString("B", font, brush, bx, by);
-            g.DrawString("C", font, brush, cx, cy);
-            g.DrawString("D", font, brush, dx, dy);
-            g.DrawString("E", font, brush, ex, ey);
-            g.DrawString("F", font, brush, fx, fy);
-            g.DrawString("G", font, brush, gx, gy);
-            g.DrawString("H", font, brush, hx, hy);
+            g.DrawString("A", font, brush, ax- 10, ay- 10);
+            g.DrawString("B", font, brush, bx- 10, by- 10);
+            g.DrawString("C", font, brush, cx- 10, cy- 10);
+            g.DrawString("D", font, brush, dx- 10, dy- 10);
+            g.DrawString("E", font, brush, ex- 10, ey- 10);
+            g.DrawString("F", font, brush, fx+ 10, fy- 10);
+            g.DrawString("G", font, brush, gx- 10, gy- 10);
+            g.DrawString("H", font, brush, hx- 10, hy- 10);
         }
 
         private void CalculateButton_Click(object? sender, EventArgs e)
