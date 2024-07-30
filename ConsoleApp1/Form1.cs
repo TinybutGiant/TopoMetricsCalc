@@ -7,6 +7,7 @@ namespace ConsoleApp1
 {
     public partial class Form1 : Form
     {
+        private TextBox[] reentrantTextBoxes = new TextBox[4]; //Reentrant input, eValue, lValue , tValue, thetaValue  
         private TextBox[] raTextBoxes = new TextBox[4]; //4 circles radius for A
         private TextBox[] rbTextBoxes = new TextBox[4]; //4 circles radius for B
         private TextBox[] resultTextBoxes = new TextBox[16]; //16 combination overlap
@@ -55,6 +56,7 @@ namespace ConsoleApp1
             };
             this.Controls.Add(tablePanel);
 
+            // 创建第一组参数Reentrant input
             string[] reentrantLabels = { "e (horizontal distance):", "l (slant edge length):", "t (thickness):", "theta (angle):" };
             string[] defaultValues_1 = { "40", "10", "2", "0.959931" }; // theta = 55 degrees in radians
 
@@ -70,7 +72,7 @@ namespace ConsoleApp1
             drawingPanel.Paint += DrawingPanel_Paint;
             tablePanel.Controls.Add(drawingPanel);
             tablePanel.SetColumnSpan(drawingPanel, 2);
-
+            // 创建第二组参数QTR的两个圆input
             string[] raLabels = { "RA_1 (interior radius of A):", "RA_2 (interior boundary of A):", "RA_3 (boundary of A):", "RA_4 (exterior boundary of A):" };
             string[] rbLabels = { "RB_1 (interior radius of B):", "RB_2 (interior boundary of B):", "RB_3 (boundary of B):", "RB_4 (exterior boundary of B):" };
             string[] defaultValues_2 = { "15", "15.75", "17.75", "18.5" };
@@ -81,10 +83,10 @@ namespace ConsoleApp1
             double e = Convert.ToDouble(defaultValues_1[0]);
             double l = Convert.ToDouble(defaultValues_1[1]);
             double theta = Convert.ToDouble(defaultValues_1[3]);
-            double d = CalculateDistance(e, l, theta);
-
+            //double d = CalculateDistance(new PointF(0, 0), new PointF(0, 0), scale); // 初始化时设置为0
+            // 初始化dTextBox
+            dTextBox = CreateTextBox(0, 0, "0");
             Label dLabel = CreateLabel("d (distance between centers):", 0, 0);
-            dTextBox = CreateTextBox(0, 0, d.ToString());
             tablePanel.Controls.Add(dLabel);
             tablePanel.Controls.Add(dTextBox);
 
@@ -101,17 +103,11 @@ namespace ConsoleApp1
             {
                 Label label = CreateLabel(labels[i], 0, 0);
                 TextBox textBox = CreateTextBox(0, 0, defaultValues[i]);
+                reentrantTextBoxes[i] = textBox;
                 panel.Controls.Add(label);
                 panel.Controls.Add(textBox);
             }
-        }
-
-        private double CalculateDistance(double e, double l, double theta)
-        {
-            // 根据几何关系计算AC的距离d
-            return Math.Sqrt(e * e + 4 * l * l - 4 * e * l * Math.Cos(theta));
-        }
-
+        }      
         private void AddLabelsAndTextBoxes(TableLayoutPanel panel, string[] raLabels, string[] rbLabels, string[] defaultValues)
         {
             for (int i = 0; i < 4; i++)
@@ -129,7 +125,7 @@ namespace ConsoleApp1
                 panel.Controls.Add(rbTextBox);
             }
         }
-
+        
         private void CreateResultPanels(TableLayoutPanel panel)
         {
             for (int i = 0; i < 16; i++)
@@ -158,21 +154,21 @@ namespace ConsoleApp1
                 panel.Controls.Add(resultPanel);
             }
         }
-
         private void DrawingPanel_Paint(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
             Pen pen = new Pen(Color.Black, 2);
             float scale = 10.0f; // 放大倍数
 
-            double eValue = Convert.ToDouble("40");
-            double lValue = Convert.ToDouble("10");
-            double tValue = Convert.ToDouble("2");
-            double thetaValue = Convert.ToDouble("0.959931");
+            // 从reentrantTextBoxes获取参数值
+            double eValue = Convert.ToDouble(reentrantTextBoxes[0].Text);
+            double lValue = Convert.ToDouble(reentrantTextBoxes[1].Text);
+            double tValue = Convert.ToDouble(reentrantTextBoxes[2].Text);
+            double thetaValue = Convert.ToDouble(reentrantTextBoxes[3].Text);
 
-            float eFloat = (float)eValue * scale;;
-            float l = (float)lValue * scale;;
-            float t = (float)tValue * scale;;
+            float eFloat = (float)eValue * scale;
+            float l = (float)lValue * scale;
+            float t = (float)tValue * scale;
             float theta = (float)thetaValue;
 
             float x0 = 50, y0 = 250;
@@ -188,7 +184,6 @@ namespace ConsoleApp1
             float hx = cx + l, hy = gy;
 
             // 绘制re-entrant结构 多边形 ABCDEF
-            //PointF[] points = { new PointF(ax, ay), new PointF(bx, by), new PointF(cx, cy), new PointF(dx, dy), new PointF(ex, ey), new PointF(fx, fy), new PointF(gx, gy), new PointF(hx, hy) };
             PointF[] points = { new PointF(ax, ay), new PointF(bx, by), new PointF(cx, cy), new PointF(dx, dy), new PointF(ex, ey), new PointF(fx, fy) };
             g.DrawPolygon(pen, points);
             // 单独绘制线段 GF 和 CH
@@ -206,10 +201,42 @@ namespace ConsoleApp1
             g.DrawString("F", font, brush, fx+ 10, fy- 10);
             g.DrawString("G", font, brush, gx- 10, gy- 10);
             g.DrawString("H", font, brush, hx- 10, hy- 10);
-        }
 
+            // 计算点A和点C之间的距离
+            double distanceAC = CalculateDistance(new PointF(ax, ay), new PointF(cx, cy), scale);
+
+            dTextBox.Text = distanceAC.ToString(); // 更新dTextBox
+        }
+        private double CalculateDistance(PointF pointA, PointF pointC, float  scale)
+        {
+            // 计算两点之间的距离
+            float deltaX = pointC.X - pointA.X;
+            float deltaY = pointC.Y - pointA.Y;
+            return Math.Sqrt(deltaX * deltaX + deltaY * deltaY)/scale;
+        }
         private void CalculateButton_Click(object? sender, EventArgs e)
         {
+            // 从reentrantTextBoxes获取参数值
+            double eValue = Convert.ToDouble(reentrantTextBoxes[0].Text);
+            double lValue = Convert.ToDouble(reentrantTextBoxes[1].Text);
+            double thetaValue = Convert.ToDouble(reentrantTextBoxes[3].Text);
+
+            float scale = 10.0f; // 放大倍数
+            float eFloat = (float)eValue * scale;
+            float l = (float)lValue * scale;
+            float theta = (float)thetaValue;
+
+            float x0 = 50, y0 = 250;
+
+            // 计算各点坐标
+            float ax = x0, ay = y0;
+            float cx = x0 + eFloat - (float)(l * Math.Sin(theta)), cy = y0 - (float)(l * Math.Cos(theta));
+
+            // 计算点A和点C之间的距离
+            d = (float)CalculateDistance(new PointF(ax, ay), new PointF(cx, cy), scale);
+            
+            dTextBox.Text = d.ToString(); // 更新dTextBox
+            
             // 读取所有半径值
             for (int i = 0; i < 4; i++)
             {
@@ -244,7 +271,7 @@ namespace ConsoleApp1
             {
                 Style = SKPaintStyle.Stroke,
                 Color = SKColors.Green,
-                StrokeWidth = 2
+                StrokeWidth = 1
             })
             {
                 // 调整圆圈大小和位置
